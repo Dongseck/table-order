@@ -4,6 +4,7 @@ node_modules/
 # Build outputs
 dist/
 build/
+*.tsbuildinfo
 
 # Environment
 .env
@@ -26,6 +27,13 @@ npm-debug.log*
 
 # Docker volumes
 postgres-data/
+
+# Test coverage
+coverage/
+
+# Prisma generated
+backend/prisma/migrations/dev.db
+backend/prisma/migrations/dev.db-journal
 
 # Temporary
 /tmp/

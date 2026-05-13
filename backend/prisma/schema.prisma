@@ -1,0 +1,148 @@
+// Foundation owns this schema. Changes require team consensus.
+// Reference: aidlc-docs/construction/foundation/functional-design/domain-entities.md
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Store {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  adminUsers AdminUser[]
+  tables     Table[]
+  categories Category[]
+}
+
+model AdminUser {
+  id           Int      @id @default(autoincrement())
+  storeId      Int
+  username     String
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  store Store @relation(fields: [storeId], references: [id], onDelete: Restrict)
+
+  @@unique([storeId, username])
+}
+
+model Table {
+  id               Int      @id @default(autoincrement())
+  storeId          Int
+  tableNumber      Int
+  passwordHash     String
+  currentSessionId Int?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  store    Store          @relation(fields: [storeId], references: [id], onDelete: Restrict)
+  sessions TableSession[]
+
+  @@unique([storeId, tableNumber])
+}
+
+model TableSession {
+  id        Int       @id @default(autoincrement())
+  tableId   Int
+  startedAt DateTime  @default(now())
+  endedAt   DateTime?
+
+  table  Table   @relation(fields: [tableId], references: [id], onDelete: Restrict)
+  orders Order[]
+
+  @@index([tableId, endedAt])
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  storeId   Int
+  name      String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store Store      @relation(fields: [storeId], references: [id], onDelete: Restrict)
+  items MenuItem[]
+
+  @@index([storeId, sortOrder])
+}
+
+model MenuItem {
+  id          Int      @id @default(autoincrement())
+  categoryId  Int
+  name        String
+  price       Int
+  description String?
+  imageUrl    String?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+  @@index([categoryId, sortOrder])
+}
+
+model Order {
+  id          Int      @id @default(autoincrement())
+  sessionId   Int
+  tableId     Int
+  orderNumber Int
+  status      String   @default("PENDING")
+  totalAmount Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  session TableSession @relation(fields: [sessionId], references: [id], onDelete: Restrict)
+  items   OrderItem[]
+
+  @@unique([sessionId, orderNumber])
+  @@index([tableId, createdAt])
+}
+
+model OrderItem {
+  id            Int    @id @default(autoincrement())
+  orderId       Int
+  menuItemName  String
+  unitPrice     Int
+  quantity      Int
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+model OrderHistory {
+  id               Int      @id @default(autoincrement())
+  tableId          Int
+  tableNumber      Int
+  sessionId        Int
+  sessionStartedAt DateTime
+  sessionEndedAt   DateTime
+  orderNumber      Int
+  status           String
+  totalAmount      Int
+  orderedAt        DateTime
+  archivedAt       DateTime @default(now())
+
+  items OrderHistoryItem[]
+
+  @@index([tableId, orderedAt(sort: Desc)])
+}
+
+model OrderHistoryItem {
+  id              Int    @id @default(autoincrement())
+  orderHistoryId  Int
+  menuItemName    String
+  unitPrice       Int
+  quantity        Int
+
+  orderHistory OrderHistory @relation(fields: [orderHistoryId], references: [id], onDelete: Cascade)
+}

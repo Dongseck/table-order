@@ -36,18 +36,28 @@
 - [x] Units Generation (COMPLETED)
 
 ### CONSTRUCTION PHASE
-- [ ] Functional Design - EXECUTE (per-unit)
+- [/] Functional Design - EXECUTE (per-unit)
+  - [x] Foundation (5 artifacts incl. cross-unit-contracts) — APPROVED 2026-05-13T14:30Z
+  - [ ] Unit 1 (Auth)
+  - [ ] Unit 2 (Menu)
+  - [ ] Unit 3 (Order + SSE)
+  - [ ] Unit 4 (Table)
 - [ ] NFR Requirements - SKIP
 - [ ] NFR Design - SKIP
 - [ ] Infrastructure Design - SKIP
-- [ ] Code Generation - EXECUTE (per-unit)
+- [/] Code Generation - EXECUTE (per-unit)
+  - [x] Foundation (18/18 steps generated, ~80 files) — Awaiting approval
+  - [ ] Unit 1 (Auth)
+  - [ ] Unit 2 (Menu)
+  - [ ] Unit 3 (Order + SSE)
+  - [ ] Unit 4 (Table)
 - [ ] Build and Test - EXECUTE
 
 ### OPERATIONS PHASE
 - [ ] Operations - PLACEHOLDER
 
 ## Current Status
-- **Lifecycle Phase**: INCEPTION → CONSTRUCTION transition
-- **Current Stage**: Units Generation Complete
-- **Next Stage**: CONSTRUCTION - Functional Design (Unit 1)
-- **Status**: Awaiting user approval
+- **Lifecycle Phase**: CONSTRUCTION
+- **Current Stage**: Code Generation (Foundation) — Part 2 Generation complete
+- **Next Stage**: After Foundation approval → Unit 1~4 Functional Design (parallel) → per-Unit Code Generation
+- **Status**: Awaiting Foundation code review/approval
