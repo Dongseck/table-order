@@ -246,3 +246,65 @@ No new error codes (all already in Foundation). Plan checkboxes [x] marked throu
 **Context**: CONSTRUCTION - Code Generation (Unit 1: Auth), Part 2 complete
 
 ---
+
+## Construction - Foundation Code Generation Approved
+**Timestamp**: 2026-05-13T16:00:00Z
+**User Input**: "파운데이션 깃에 올라온 내용으로 풀해줘"
+**AI Response**: Foundation Code Generation approved. Git commit 2bbe243 confirmed with ~80 files (102 files changed, 5042 insertions). All 18 steps complete. Updated aidlc-state.md to mark Foundation Code Generation as APPROVED. Next: Unit 1~4 Functional Design (parallel).
+**Context**: CONSTRUCTION - Code Generation (Foundation), approval confirmed
+
+---
+
+## Construction - Unit 3 (Order + SSE) Functional Design Started
+**Timestamp**: 2026-05-13T16:05:00Z
+**User Input**: "유닛은 각자 4명이서 역할별로 나눴고 나는 3번을 맡아서 진행하려해"
+**AI Response**: User assigned to Unit 3 (Order + SSE). Created functional design plan with 14 clarifying questions across 6 categories (Order creation logic, Order status management, SSE real-time, Cart frontend, Admin dashboard, Visual emphasis). Plan saved to aidlc-docs/construction/plans/order-sse-functional-design-plan.md.
+**Context**: CONSTRUCTION - Functional Design (Unit 3: Order + SSE), Step 2-4 (plan creation)
+
+---
+
+## Construction - Unit 3 Functional Design Answers Received
+**Timestamp**: 2026-05-13T16:10:00Z
+**User Input**: "답변완료" (Plan file edited inline)
+  - Q1: A (삭제된 메뉴는 DB에 없으므로 자동 거부)
+  - Q2: A (totalAmount 클라이언트 제출 + 서버 검증)
+  - Q3: A (새로운 별도 Order 생성)
+  - Q4: C (순방향 + PREPARING→PENDING 롤백)
+  - Q5: B (COMPLETED 삭제 불가)
+  - Q6: "관리자별 이벤트 설정 가능하게" → 후속 질문 → 서버측 구독 필터
+  - Q7: "오류 안내 후 재실행 여부 확인" → 후속 질문 → 자동 재연결 + GET 재조회
+  - Q8: C (헤더 + 쿼리스트링 둘 다 지원)
+  - Q9: A (장바구니에도 50개 제한)
+  - Q10: A (이용완료 시 장바구니 초기화 — 단 고객 SSE 미구독이므로 실제로는 주문 성공 시에만 비움)
+  - Q11: A (GET으로 초기 로드 + SSE 실시간)
+  - Q12: B (전체 주문 목록 스크롤)
+  - Q13: C (테이블 선택 + 빈 테이블 숨기기 토글)
+  - Q14: B (항목 수준 NEW 배지)
+**AI Response**: All answers clear. Generated 4 functional design artifacts (domain-entities, business-logic-model, business-rules, frontend-components).
+**Context**: CONSTRUCTION - Functional Design (Unit 3), Steps 5-6
+
+---
+
+## Construction - Unit 3 Functional Design Approved
+**Timestamp**: 2026-05-13T16:20:00Z
+**User Input**: "확인완료 계속진행해줘"
+**AI Response**: Functional Design approved. Proceeding to Code Generation (Unit 3). Marking stage complete.
+**Context**: CONSTRUCTION - Functional Design (Unit 3) approved → Code Generation start
+
+---
+
+## Construction - Unit 3 Code Generation Plan Approved
+**Timestamp**: 2026-05-13T16:30:00Z
+**User Input**: "승인 앞으로 조심해"
+**AI Response**: Plan approved with user warning about Foundation file modification rules. Fixed plan to never modify App.tsx (Foundation owned). Generated all 13 steps (~35 files). No Foundation files modified.
+**Context**: CONSTRUCTION - Code Generation (Unit 3), Part 1 → Part 2 execution
+
+---
+
+## Construction - Unit 3 Code Generation Approved
+**Timestamp**: 2026-05-13T16:45:00Z
+**User Input**: "승인"
+**AI Response**: Code Generation approved. All 13 steps complete. Proceeding to Build and Test.
+**Context**: CONSTRUCTION - Code Generation (Unit 3) approved → Build and Test
+
+---

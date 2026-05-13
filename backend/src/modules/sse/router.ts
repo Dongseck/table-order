@@ -1,8 +1,7 @@
 import { Router } from 'express';
+import { adminAuth } from '../../middlewares/auth';
+import { connectSse } from './sse.controller';
 
-/**
- * Unit 3 (SSE) owns this router.
- * Routes to be added:
- *   GET /admin/sse/orders   — SSE stream for store admins
- */
 export const sseRouter = Router();
+
+sseRouter.get('/admin/sse/orders', adminAuth, connectSse);

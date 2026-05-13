@@ -1,4 +1,4 @@
-// SSE event types — Foundation stub, Unit 3 completes payload shapes.
+export type SseEventType = 'order:new' | 'order:status' | 'order:deleted' | 'table:completed';
 
 export type SseEvent =
   | {
@@ -9,6 +9,7 @@ export type SseEvent =
         tableNumber: number;
         orderNumber: number;
         totalAmount: number;
+        items: Array<{ menuItemName: string; unitPrice: number; quantity: number }>;
         createdAt: string;
       };
     }
