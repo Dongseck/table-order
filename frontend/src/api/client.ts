@@ -44,6 +44,19 @@ function tokenFor(path: string): string | null {
   return null;
 }
 
+function scopeFor(path: string): 'admin' | 'table' | null {
+  if (path.startsWith('/admin/') || path.includes('/api/v1/admin/')) return 'admin';
+  if (path.startsWith('/customer/') || path.includes('/api/v1/customer/')) return 'table';
+  return null;
+}
+
+// Auth error handler — Unit 1 (Auth) registers here so token expiry triggers logout.
+export type AuthErrorHandler = (scope: 'admin' | 'table', code: string) => void;
+let onAuthError: AuthErrorHandler | null = null;
+export function registerAuthErrorHandler(handler: AuthErrorHandler | null): void {
+  onAuthError = handler;
+}
+
 async function request<T>(method: Method, path: string, opts: RequestOptions = {}): Promise<T> {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
@@ -84,6 +97,13 @@ async function request<T>(method: Method, path: string, opts: RequestOptions = {
   }
 
   if (!json.success) {
+    if (
+      res.status === 401 &&
+      (json.error.code === 'AUTH_TOKEN_EXPIRED' || json.error.code === 'AUTH_TOKEN_INVALID')
+    ) {
+      const scope = scopeFor(path);
+      if (scope && onAuthError) onAuthError(scope, json.error.code);
+    }
     throw new ApiError(json.error.code, json.error.message, res.status, json.error.details);
   }
   return json.data;

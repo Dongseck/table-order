@@ -1,9 +1,8 @@
 import type { NextFunction, Request, Response } from 'express';
+import { AppError } from '../common/error';
+import { ErrorCodes } from '../common/error-codes';
+import { verifyAdminToken, verifyTableToken } from '../modules/auth/jwt';
 
-/**
- * Auth context attached to req.auth by adminAuth/tableAuth middlewares.
- * Unit 1 (Auth) replaces these stubs with real JWT verification.
- */
 export type AdminAuthContext = { role: 'admin'; adminUserId: number; storeId: number };
 export type TableAuthContext = { role: 'table'; tableId: number; storeId: number };
 export type AuthContext = AdminAuthContext | TableAuthContext;
@@ -17,22 +16,51 @@ declare global {
   }
 }
 
-/**
- * Foundation stub for adminAuth middleware.
- * Always succeeds as the seeded admin (adminUserId=1, storeId=1).
- * Unit 1 will replace with real JWT verification.
- */
-export function adminAuth(req: Request, _res: Response, next: NextFunction): void {
-  req.auth = { role: 'admin', adminUserId: 1, storeId: 1 };
-  next();
+function extractBearer(req: Request): string | null {
+  const header = req.headers.authorization;
+  if (header && header.startsWith('Bearer ')) {
+    return header.slice('Bearer '.length).trim() || null;
+  }
+  return null;
 }
 
-/**
- * Foundation stub for tableAuth middleware.
- * Always succeeds as the seeded table 1 (tableId=1, storeId=1).
- * Unit 1 will replace with real JWT verification.
- */
+function extractTableToken(req: Request): string | null {
+  // Header first; fall back to ?token= for SSE (EventSource cannot set headers)
+  const bearer = extractBearer(req);
+  if (bearer) return bearer;
+  const queryToken = req.query.token;
+  if (typeof queryToken === 'string' && queryToken.length > 0) return queryToken;
+  return null;
+}
+
+export function adminAuth(req: Request, _res: Response, next: NextFunction): void {
+  const token = extractBearer(req);
+  if (!token) {
+    return next(
+      new AppError(ErrorCodes.AUTH_TOKEN_INVALID, 'Authorization token required', 401),
+    );
+  }
+  try {
+    const { adminUserId, storeId } = verifyAdminToken(token);
+    req.auth = { role: 'admin', adminUserId, storeId };
+    next();
+  } catch (e) {
+    next(e);
+  }
+}
+
 export function tableAuth(req: Request, _res: Response, next: NextFunction): void {
-  req.auth = { role: 'table', tableId: 1, storeId: 1 };
-  next();
+  const token = extractTableToken(req);
+  if (!token) {
+    return next(
+      new AppError(ErrorCodes.AUTH_TOKEN_INVALID, 'Authorization token required', 401),
+    );
+  }
+  try {
+    const { tableId, storeId } = verifyTableToken(token);
+    req.auth = { role: 'table', tableId, storeId };
+    next();
+  } catch (e) {
+    next(e);
+  }
 }

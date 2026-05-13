@@ -129,6 +129,42 @@ AI-DLC 워크플로우를 시작해봅시다."
 
 ---
 
+## Construction - Unit 1 Code Gen Plan Approved → Part 2 Start
+**Timestamp**: 2026-05-13T17:00:00Z
+**User Input**: "Approve & Generate — 승인 시 Part 2 실행 (Step 1~17 순차 코드 생성)"
+**AI Response**: Plan approved. Starting Part 2 — executing Steps 1-17 sequentially with checkbox updates.
+**Context**: CONSTRUCTION - Code Generation (Unit 1: Auth), Part 2 start
+
+---
+
+## Construction - Unit 1 Functional Design Approved
+**Timestamp**: 2026-05-13T16:45:00Z
+**User Input**: "Continue to Next Stage"
+**AI Response**: Unit 1 Functional Design approved (3 artifacts). Drafting Code Generation Plan (Part 1) — sequential steps for backend (service/jwt/router/middleware/tests) + frontend (contexts/guards/pages/api patch/tests) + shared types.
+**Context**: CONSTRUCTION - Code Generation (Unit 1: Auth), Part 1 Planning start
+
+---
+
+## Construction - Unit 1 (Auth) Functional Design Complete
+**Timestamp**: 2026-05-13T16:30:00Z
+**User Input**: "답변 다했다 시작해" with all [Answer]: filled (Q1~Q10 all=A or 추천, Q7 delegated, Q11 empty)
+**AI Response**: Reviewed answers (no ambiguity). For Q7 (delegated), chose "no App.tsx modification" alternative — Provider/Guard wrap inside each page component. Generated 3 functional design artifacts:
+  - business-logic-model.md: admin/customer login sequences, /auth/me endpoint, jwt sign/verify, middleware behavior, SSE token query-string support, API endpoint specs (3 endpoints)
+  - business-rules.md: validation schemas (using Foundation), R1-R14 rules (unified error message, JWT policy, rate limit, multi-session, logout, 401 auto-handling, App.tsx non-modification principle)
+  - frontend-components.md: AdminAuthContext/CustomerAuthContext, AdminGuard/CustomerGuard (page-level wrap pattern), AdminHeader for logout, AdminLoginPage/CustomerLoginPage spec, client.ts onAuthError minimal patch (~10 lines), file inventory
+No new error codes (all already in Foundation). Plan checkboxes [x] marked through Step 5.
+**Context**: CONSTRUCTION - Functional Design (Unit 1: Auth), Step 5 complete
+
+---
+
+## Construction - Unit 1 (Auth) Started on unit/auth branch
+**Timestamp**: 2026-05-13T16:15:00Z
+**User Input**: "오케이 나는 Unit1을 진행해야돼. 계획을 세워보자" → "브랜치 분기 + FD 바로 진행 (추천)"
+**AI Response**: Created `unit/auth` branch from main (Foundation merged). Outlined Unit 1 progression: FD → Code Gen Plan → Code Gen → self-verify → commit/push. Starting Stage 1 (Functional Design) — drafting plan file + clarifying questions.
+**Context**: CONSTRUCTION - Functional Design (Unit 1: Auth), Step 1-3
+
+---
+
 ## Construction - Foundation Final Review & Fixes
 **Timestamp**: 2026-05-13T15:55:00Z
 **User Input**: "이거 작업 완료 된거 맞지? 마지막 검토 한번 더 해"
@@ -196,5 +232,17 @@ AI-DLC 워크플로우를 시작해봅시다."
   - Q23="너가해" → 기본 컨벤션 (Conventional Commits, 브랜치 unit/{name}, 통합 시 PR 리뷰)
 **AI Response**: Answers reviewed for ambiguity — no follow-up questions needed. User intent clear: MVP workshop, minimize complexity, AI default to recommendations. Proceeding to Step 5 (artifact generation).
 **Context**: CONSTRUCTION - Functional Design (Foundation), Step 4 complete
+
+---
+
+## Construction - Unit 1 Code Generation Complete
+**Timestamp**: 2026-05-13T17:45:00Z
+**AI Response**: Generated 24 files (some modified) across 17 plan steps:
+  Shared (1): api/auth.ts filled with 5 DTOs.
+  Backend (8 new + 2 modified): jwt.ts, auth.service.ts, auth.schemas.ts, router.ts (stub→filled), middlewares/auth.ts (stub→real JWT verify w/ header+query token support), common/async-handler.ts, 3 test files (service/router/middleware) with Prisma jest.mock.
+  Frontend (13 new + 1 modified): lib/humanMessage.ts, api/client.ts (registerAuthErrorHandler patch), api/auth.ts, contexts/AdminAuthContext + CustomerAuthContext (incl. /auth/me auto-login), components/auth (AdminGuard/CustomerGuard/AdminHeader + barrel + css), AdminLoginPlaceholder.tsx + CustomerLoginPlaceholder.tsx (placeholder→real, filename kept for App.tsx non-modification), 2 css files, 2 test files (AdminAuthContext + AdminLoginPage smoke).
+  Docs: unit-1-auth/code/README.md with file index, 7 manual verification scenarios, integration guidance for Units 2/3/4.
+  All plan checkboxes marked [x]. App.tsx unchanged. No new error codes (Foundation catalog reused).
+**Context**: CONSTRUCTION - Code Generation (Unit 1: Auth), Part 2 complete
 
 ---
