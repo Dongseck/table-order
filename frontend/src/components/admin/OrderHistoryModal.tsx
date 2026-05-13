@@ -30,7 +30,7 @@ export const OrderHistoryModal: React.FC<Props> = ({ tableId, tableNumber, onClo
   }
 
   return (
-    <Modal onClose={onClose} title={`테이블 ${tableNumber} - 과거 주문 내역`}>
+    <Modal open={true} onClose={onClose} title={`테이블 ${tableNumber} - 과거 주문 내역`}>
       <div style={{ marginBottom: 16, display: 'flex', gap: 8, alignItems: 'center' }}>
         <input
           type="date"
@@ -39,7 +39,7 @@ export const OrderHistoryModal: React.FC<Props> = ({ tableId, tableNumber, onClo
           style={{ padding: '6px 10px', border: '1px solid #ddd', borderRadius: 6, fontSize: 14 }}
         />
         {dateFilter && (
-          <Button variant="secondary" size="small" onClick={() => setDateFilter('')}>
+          <Button variant="secondary" size="sm" onClick={() => setDateFilter('')}>
             초기화
           </Button>
         )}

@@ -1,0 +1,2 @@
+- [User Role](user_role.md) — Unit 3 (Order + SSE) 담당 개발자, 4인 팀 워크숍 MVP
+- [Foundation Files](feedback_foundation_files.md) — Foundation 소유 파일 절대 수정 금지, 위반 시 경고받음

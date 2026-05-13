@@ -31,15 +31,15 @@ export const TableManageCard: React.FC<Props> = ({ table, onComplete, onDelete, 
 
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
         {isActive && (
-          <Button variant="danger" size="small" onClick={() => onComplete(table.id)}>
+          <Button variant="danger" size="sm" onClick={() => onComplete(table.id)}>
             이용 완료
           </Button>
         )}
-        <Button variant="secondary" size="small" onClick={() => onShowHistory(table.id)}>
+        <Button variant="secondary" size="sm" onClick={() => onShowHistory(table.id)}>
           과거 내역
         </Button>
         {!isActive && (
-          <Button variant="secondary" size="small" onClick={() => onDelete(table.id)}>
+          <Button variant="secondary" size="sm" onClick={() => onDelete(table.id)}>
             삭제
           </Button>
         )}

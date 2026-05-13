@@ -89,7 +89,7 @@ export const TableManagePage: React.FC = () => {
 
       {/* 생성 모달 */}
       {showCreateForm && (
-        <Modal onClose={() => setShowCreateForm(false)} title="테이블 추가">
+        <Modal open={showCreateForm} onClose={() => setShowCreateForm(false)} title="테이블 추가">
           <form onSubmit={handleCreate} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             <div>
               <label style={{ fontSize: 13, fontWeight: 600 }}>테이블 번호</label>
@@ -121,6 +121,7 @@ export const TableManagePage: React.FC = () => {
       {/* 확인 다이얼로그 */}
       {confirmAction && (
         <ConfirmDialog
+          open={true}
           title={confirmAction.type === 'complete' ? '이용 완료' : '테이블 삭제'}
           message={
             confirmAction.type === 'complete'

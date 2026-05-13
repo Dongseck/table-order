@@ -1,11 +1,19 @@
 import request from 'supertest';
 import { createApp } from '../../src/app';
+import { makeTableToken, makeAdminToken } from '../helpers/auth';
 
 const app = createApp();
+const tableToken = makeTableToken();
+const adminToken = makeAdminToken();
 
-describe('GET /api/v1/customer/orders', () => {
+const hasDb = process.env.DATABASE_URL?.startsWith('postgres');
+const describeWithDb = hasDb ? describe : describe.skip;
+
+describeWithDb('GET /api/v1/customer/orders', () => {
   it('returns 200 with orders array', async () => {
-    const res = await request(app).get('/api/v1/customer/orders');
+    const res = await request(app)
+      .get('/api/v1/customer/orders')
+      .set('Authorization', `Bearer ${tableToken}`);
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
@@ -13,9 +21,11 @@ describe('GET /api/v1/customer/orders', () => {
   });
 });
 
-describe('GET /api/v1/admin/orders', () => {
+describeWithDb('GET /api/v1/admin/orders', () => {
   it('returns 200 with tables array', async () => {
-    const res = await request(app).get('/api/v1/admin/orders');
+    const res = await request(app)
+      .get('/api/v1/admin/orders')
+      .set('Authorization', `Bearer ${adminToken}`);
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
@@ -23,14 +33,18 @@ describe('GET /api/v1/admin/orders', () => {
   });
 
   it('accepts tableId query filter', async () => {
-    const res = await request(app).get('/api/v1/admin/orders?tableId=1');
+    const res = await request(app)
+      .get('/api/v1/admin/orders?tableId=1')
+      .set('Authorization', `Bearer ${adminToken}`);
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
   });
 
   it('accepts status query filter', async () => {
-    const res = await request(app).get('/api/v1/admin/orders?status=PENDING');
+    const res = await request(app)
+      .get('/api/v1/admin/orders?status=PENDING')
+      .set('Authorization', `Bearer ${adminToken}`);
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);

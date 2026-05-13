@@ -1,7 +1,7 @@
 import { prisma } from '../../common/prisma';
 import { AppError } from '../../common/error';
 import { ErrorCodes } from '../../common/error-codes';
-import { tableSessionService } from '../table/table-session.service';
+import { getOrStartActiveSession } from '../table/table-session.service';
 import { sseManager } from '../sse/sse.manager';
 import type { OrderStatus } from '@shared/types/domain';
 
@@ -48,7 +48,7 @@ export async function createOrder(tableId: number, storeId: number, input: Creat
     );
   }
 
-  const { sessionId } = await tableSessionService.getOrStartActiveSession(tableId);
+  const { sessionId } = await getOrStartActiveSession(tableId);
 
   const order = await prisma.$transaction(async (tx) => {
     const lastOrder = await tx.order.findFirst({

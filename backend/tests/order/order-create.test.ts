@@ -1,12 +1,15 @@
 import request from 'supertest';
 import { createApp } from '../../src/app';
+import { makeTableToken } from '../helpers/auth';
 
 const app = createApp();
+const tableToken = makeTableToken();
 
 describe('POST /api/v1/customer/orders', () => {
   it('returns 400 when items array is empty', async () => {
     const res = await request(app)
       .post('/api/v1/customer/orders')
+      .set('Authorization', `Bearer ${tableToken}`)
       .send({ items: [], totalAmount: 0 });
 
     expect(res.status).toBe(400);
@@ -17,6 +20,7 @@ describe('POST /api/v1/customer/orders', () => {
   it('returns 400 when quantity is out of range', async () => {
     const res = await request(app)
       .post('/api/v1/customer/orders')
+      .set('Authorization', `Bearer ${tableToken}`)
       .send({
         items: [{ menuItemId: 1, quantity: 0 }],
         totalAmount: 0,
@@ -35,6 +39,7 @@ describe('POST /api/v1/customer/orders', () => {
 
     const res = await request(app)
       .post('/api/v1/customer/orders')
+      .set('Authorization', `Bearer ${tableToken}`)
       .send({ items, totalAmount: 0 });
 
     expect(res.status).toBe(400);
@@ -45,6 +50,7 @@ describe('POST /api/v1/customer/orders', () => {
   it('returns 400 when totalAmount is missing', async () => {
     const res = await request(app)
       .post('/api/v1/customer/orders')
+      .set('Authorization', `Bearer ${tableToken}`)
       .send({ items: [{ menuItemId: 1, quantity: 1 }] });
 
     expect(res.status).toBe(400);
@@ -54,6 +60,7 @@ describe('POST /api/v1/customer/orders', () => {
   it('returns 400 when duplicate menuItemId is provided', async () => {
     const res = await request(app)
       .post('/api/v1/customer/orders')
+      .set('Authorization', `Bearer ${tableToken}`)
       .send({
         items: [
           { menuItemId: 1, quantity: 1 },
